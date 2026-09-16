@@ -31,6 +31,8 @@ function loadConfig(): Config {
   return { ...DEFAULTS };
 }
 
+const name = "agent-collision-detector";
+
 async function main(cfg: Config) {
   console.log(`[${name}] Connected to ${cfg.baseUrl}`);
   console.log(`[${name}] Timeout: ${cfg.timeout}ms | Retries: ${cfg.retries}`);
