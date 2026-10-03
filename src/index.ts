@@ -1,53 +1,23 @@
-#!/usr/bin/env bun
-/**
- * agent-collision-detector - Detects and resolves conflicts between autonomous agents in multi-agent systems
- * Built by Retsumdk
- */
-
-import { Command } from "commander";
-import { existsSync, readFileSync } from "fs";
-import { join } from "path";
-
-interface Config {
-  apiKey?: string;
-  baseUrl: string;
-  timeout: number;
-  retries: number;
-}
-
-const DEFAULTS: Config = {
-  baseUrl: "https://api.example.com",
-  timeout: 30000,
-  retries: 3,
-};
-
-function loadConfig(): Config {
-  const cfgPath = join(process.cwd(), "config.json");
-  if (existsSync(cfgPath)) {
-    try {
-      return { ...DEFAULTS, ...JSON.parse(readFileSync(cfgPath, "utf-8")) };
-    } catch { /* ignore */ }
-  }
-  return { ...DEFAULTS };
-}
-
-const name = "agent-collision-detector";
-
-async function main(cfg: Config) {
-  console.log(`[${name}] Connected to ${cfg.baseUrl}`);
-  console.log(`[${name}] Timeout: ${cfg.timeout}ms | Retries: ${cfg.retries}`);
-  // TODO: implement your logic here
-  console.log(`[${name}] Done.`);
-}
-
-const program = new Command();
-program.name("agent-collision-detector").description("Detects and resolves conflicts between autonomous agents in multi-agent systems").version("1.0.0")
-  .option("-c, --config <path>", "Config file path", "config.json")
-  .option("-v, --verbose", "Verbose mode")
-  .action(async (opts) => {
-    const cfg = loadConfig();
-    if (opts.verbose) console.log("Verbose mode on");
-    try { await main(cfg); }
-    catch (e) { console.error(`Error: ${e}`); process.exit(1); }
-  });
-program.parse(process.argv);
+export { CollisionEngine, type EngineOptions, type RecordResult } from "./engine.js";
+export { resolveCollision, type ResolutionPlan } from "./resolution.js";
+export { PolicyTable } from "./policies.js";
+export { LockRegistry, type LockOptions, type LockMode, type AcquireResult, type Lease } from "./lock.js";
+export { LeaseRegistry, type LeaseOptions } from "./lease.js";
+export { AuditLog, type AuditEntry, type AuditReport } from "./audit.js";
+export { runDemo, renderDemo, type DemoRun, type DemoLine } from "./demo.js";
+export { loadConfig, type FileConfig } from "./config.js";
+export { createDetectorServer, type ServerOptions, type DetectorServer } from "./server.js";
+export { simhash, simhashSimilarity } from "./simhash.js";
+export { hash64, hamming64Bits, sha256Hex, constantTimeEqual } from "./hashing.js";
+export { DetectorError, CorruptionError, type ErrorCode } from "./errors.js";
+export type {
+  AgentAction,
+  ActionKind,
+  Claim,
+  AccessMode,
+  Collision,
+  CollisionKind,
+  ResolutionStrategy,
+  ResourcePolicy,
+  EngineStats,
+} from "./types.js";

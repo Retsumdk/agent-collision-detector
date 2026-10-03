@@ -1,17 +1,54 @@
 {
   "name": "agent-collision-detector",
-  "description": "Detects and resolves conflicts between autonomous agents in multi-agent systems",
   "version": "1.0.0",
+  "description": "Detects and resolves conflicts between autonomous agents in multi-agent systems: resource contention, write-write races, duplicate work, rate-limit breaches and read/write hazards, with resolution planning and a hash-chained audit ledger",
   "type": "module",
-  "scripts": {
-    "test": "bun test",
-    "build": "tsc"
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
   },
-  "dependencies": {
-    "commander": "^11.1.0"
+  "bin": {
+    "agent-collision-detector": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "prepare": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit",
+    "test": "bun test",
+    "build": "tsc -p tsconfig.json",
+    "cli": "bun src/cli.ts",
+    "demo": "bun src/cli.ts demo"
+  },
+  "keywords": [
+    "ai",
+    "agents",
+    "multi-agent",
+    "collision-detection",
+    "resource-locking",
+    "deadlock",
+    "simhash",
+    "deduplication",
+    "rate-limiting",
+    "audit-log"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Retsumdk/agent-collision-detector.git"
+  },
+  "engines": {
+    "node": ">=20"
   },
   "devDependencies": {
-    "bun-types": "^1.0.0",
-    "typescript": "^5.3.0"
+    "bun-types": "^1.2.21",
+    "typescript": "^5.9.3"
   }
 }
